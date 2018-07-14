@@ -7,6 +7,9 @@
       <el-tab-pane name="checking" label="审批中">
         <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
+      <el-tab-pane name="refunding" label="核账中">
+        <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+      </el-tab-pane>
       <el-tab-pane name="rejected" label="未通过">
         <apply-table :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
@@ -66,6 +69,9 @@ export default {
       this.loading = true
       let _status = 1
       switch (this.curTabType) {
+        case 'refunding':
+          _status = 2
+          break
         case 'checking':
           _status = 1
           break
