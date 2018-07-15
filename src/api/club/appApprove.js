@@ -32,3 +32,16 @@ export function fetchApprovalLv() {
     headers
   })
 }
+
+/**
+ * 获取是否核账
+ */
+export function fetchApprovalRefund(appId) {
+  const headers = {}
+  headers[AUTH_NAME] = getToken()
+  return axios({
+    url: `${process.env.BASE_URL}/club/approval/refund?appId=` + appId,
+    method: 'GET',
+    headers
+  })
+}

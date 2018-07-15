@@ -41,6 +41,33 @@
             </el-form>
           </div>
         </div>
+        <!-- 社团核账功能 -->
+        <div>
+          <el-collapse :accordion="false">
+            <el-collapse-item>
+              <template slot="title">
+                <i :class="checkTitle(checkResults[checkRefund.level])" class="header-icon"></i>
+                {{ checkRefund.title }}
+              </template>
+              <div v-if="checkResults[checkRefund.level]" class="check-result">
+                <p class="indent">{{ checkResults[checkRefund.level].comment }} </p>
+                <div class="result-box" :class="checkTagType(checkResults[checkRefund.level])">
+                  <div class="result">
+                    <b>{{ checkResults[checkRefund.level].result }}</b>
+                  </div>
+                  <div class="person">
+                    审核人：
+                    <b class="black">{{ checkResults[checkRefund.level].auditor }}</b>
+                  </div>
+                </div>
+              </div>
+              <div v-else>
+                <el-alert title="暂无审批记录" type="warning" :closable="false" />
+              </div>
+              xxxxxx表单提交申请
+            </el-collapse-item>
+          </el-collapse>
+        </div>
       </el-col>
       <el-col v-if="applyData" v-loading="!applyData" :span="16" class="main-content">
         <div class="detail-table">
@@ -120,7 +147,7 @@
 
 <script>
 import { fetchApprovalById } from '@/api/club/app'
-import { fetchApprovalLv, postApproval } from '@/api/club/appApprove'
+import { fetchApprovalLv, fetchApprovalRefund, postApproval } from '@/api/club/appApprove'
 export default {
   data() {
     return {
@@ -132,7 +159,12 @@ export default {
       checkResults: {
         lv2: null,
         lv3: null,
-        lv4: null
+        lv4: null,
+        lv5: null
+      },
+      checkRefund: {
+        title: '财务核账',
+        level: 'lv5'
       },
       checkData: [
         {
@@ -151,6 +183,12 @@ export default {
           title: '团委审批',
           level: 'lv4'
         }
+        /*
+        {
+          title: '财务核账',
+          level: 'lv5'
+        }
+        */
       ],
       downloadLink: `${process.env.BASE_URL}/club/app/file?id=`,
       approvalLV: {
@@ -170,6 +208,7 @@ export default {
       this.checkResults.lv2 = this.applyData.results.find(_ => _.approvalLV === 2)
       this.checkResults.lv3 = this.applyData.results.find(_ => _.approvalLV === 3)
       this.checkResults.lv4 = this.applyData.results.find(_ => _.approvalLV === 4)
+      this.checkResults.lv5 = this.applyData.results.find(_ => _.approvalLV === 5)
       // 2 审批财务
       // 3 场地和社联审批
       // 4 团委审批
@@ -177,21 +216,31 @@ export default {
       fetchApprovalLv().then(({ data }) => {
         // 审核阶段
         const phaseLv = this.applyData.lv
-        const authorizedRight = data.data
-        if (data.status === 200 && phaseLv !== 100 && phaseLv === authorizedRight) {
-          this.approvalLV.authorized = true
-          switch (authorizedRight) {
-            case 2:
-              this.approvalLV.title = '财务审批'
-              break
-            case 3:
-              this.approvalLV.title = '场地和社联审批'
-              break
-            case 4:
-              this.approvalLV.title = '团委审批'
-              break
+        const status = data.status
+        var authorizedRight = data.data
+        console.log(data) // 这里后端无返回 考虑分辨用户和非当前用户显示核账功能
+        // 判断是否提交核账申请
+        fetchApprovalRefund(this.applyId).then(({ data }) => {
+          if (data.data === 1 && phaseLv === 5 && authorizedRight === 2) {
+            authorizedRight = 5
           }
-        }
+          if (status === 200 && phaseLv !== 100 && phaseLv === authorizedRight) {
+            this.approvalLV.authorized = true
+            switch (authorizedRight) {
+              case 2:
+                this.approvalLV.title = '财务审批'
+                break
+              case 3:
+                this.approvalLV.title = '场地和社联审批'
+                break
+              case 4:
+                this.approvalLV.title = '团委审批'
+                break
+              case 5:
+                this.approvalLV.title = '财务核账'
+            }
+          }
+        })
       })
     })
   },
