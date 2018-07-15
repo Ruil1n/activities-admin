@@ -10,13 +10,13 @@
       <el-tab-pane name="checking" label="审批中">
         <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
-      <el-tab-pane name="refunding" label="核账中">
-        <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
-      </el-tab-pane>
       <el-tab-pane name="rejected" label="未通过">
         <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
       <el-tab-pane name="passed" label="已通过">
+        <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
+      </el-tab-pane>
+      <el-tab-pane name="refunding" label="核账中">
         <apply-table :showOperate="true" @delete="handleDelete" :curList="curList" :loading="loading" :fromIndex="fromIndex" />
       </el-tab-pane>
     </el-tabs>

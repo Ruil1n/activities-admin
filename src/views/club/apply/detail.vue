@@ -25,22 +25,6 @@
             </div>
           </el-collapse-item>
         </el-collapse>
-        <div v-if="approvalLV.authorized" class="approval-container">
-          <div class="title">
-            <i class="el-icon-fa-flag" />&nbsp;&nbsp;{{ approvalLV.title }}</div>
-          <div>
-            <el-form>
-              <el-form-item label="是否同意" style="margin-bottom: 0px;">
-                <el-radio v-model="isAgreed" label="1">同意</el-radio>
-                <el-radio v-model="isAgreed" label="0">不同意</el-radio>
-              </el-form-item>
-              <el-form-item label="评语">
-                <el-input type="textarea" v-model="comment" :autosize="{ minRows: 4}"></el-input>
-              </el-form-item>
-              <el-button type="primary" :loading="btnSubmitLoading" ref="btnSubmit" @click="handleSubmit">提交审核</el-button>
-            </el-form>
-          </div>
-        </div>
         <!-- 社团核账功能 -->
         <div>
           <el-collapse :accordion="false">
@@ -64,9 +48,37 @@
               <div v-else>
                 <el-alert title="暂无审批记录" type="warning" :closable="false" />
               </div>
-              xxxxxx表单提交申请
+              <div v-if="approvalLV.lv==1">
+                <h2>核账申请：</h2>
+                <el-form>
+                <el-form-item label="实用自留金额" >
+                  <el-input v-model="realSelfMoney" placeholder="请输入金额"></el-input>
+                </el-form-item>
+                <el-form-item label="实用社团预留金额">
+                  <el-input v-model="realReserveMoney" placeholder="请输入内容"></el-input>
+                </el-form-item>
+                <el-button type="primary" :loading="btnSubmitLoading" ref="btnSubmit" @click="refundSubmit">提交审核</el-button>
+                </el-form>
+              </div>
             </el-collapse-item>
           </el-collapse>
+        </div>
+
+        <div v-if="approvalLV.authorized" class="approval-container">
+          <div class="title">
+            <i class="el-icon-fa-flag" />&nbsp;&nbsp;{{ approvalLV.title }}</div>
+          <div>
+            <el-form>
+              <el-form-item label="是否同意" style="margin-bottom: 0px;">
+                <el-radio v-model="isAgreed" label="1">同意</el-radio>
+                <el-radio v-model="isAgreed" label="0">不同意</el-radio>
+              </el-form-item>
+              <el-form-item label="评语">
+                <el-input type="textarea" v-model="comment" :autosize="{ minRows: 4}"></el-input>
+              </el-form-item>
+              <el-button type="primary" :loading="btnSubmitLoading" ref="btnSubmit" @click="handleSubmit">提交审核</el-button>
+            </el-form>
+          </div>
         </div>
       </el-col>
       <el-col v-if="applyData" v-loading="!applyData" :span="16" class="main-content">
@@ -146,8 +158,8 @@
 </template>
 
 <script>
-import { fetchApprovalById } from '@/api/club/app'
-import { fetchApprovalLv, fetchApprovalRefund, postApproval } from '@/api/club/appApprove'
+import { fetchApprovalById, postRefund } from '@/api/club/app'
+import { fetchApprovalLv, fetchApprovalRefund, postApproval, postAppRefund } from '@/api/club/appApprove'
 export default {
   data() {
     return {
@@ -193,11 +205,14 @@ export default {
       downloadLink: `${process.env.BASE_URL}/club/app/file?id=`,
       approvalLV: {
         authorized: false,
-        title: ''
+        title: '',
+        lv: ''
       },
       isAgreed: false,
       comment: '',
-      btnSubmitLoading: false
+      btnSubmitLoading: false,
+      realSelfMoney: '',
+      realReserveMoney: ''
     }
   },
   mounted() {
@@ -218,11 +233,13 @@ export default {
         const phaseLv = this.applyData.lv
         const status = data.status
         var authorizedRight = data.data
+        this.approvalLV.lv = data.data
         console.log(data) // 这里后端无返回 考虑分辨用户和非当前用户显示核账功能
         // 判断是否提交核账申请
         fetchApprovalRefund(this.applyId).then(({ data }) => {
           if (data.data === 1 && phaseLv === 5 && authorizedRight === 2) {
             authorizedRight = 5
+            this.approvalLV.lv = 5
           }
           if (status === 200 && phaseLv !== 100 && phaseLv === authorizedRight) {
             this.approvalLV.authorized = true
@@ -254,6 +271,29 @@ export default {
         })
         return
       }
+      if (this.approvalLV.lv === 5) {
+        this.btnSubmitLoading = true
+        postAppRefund({
+          appId: this.applyId,
+          result: +this.isAgreed,
+          comment: this.comment
+        }).then(res => {
+          this.$message({
+            type: 'success',
+            message: '审核成功！'
+          })
+          this.btnSubmitLoading = false
+          window.location.reload()
+        }).catch(() => {
+          this.btnSubmitLoading = false
+          this.$message({
+            type: 'error',
+            message: '审核失败！'
+          })
+        })
+        this.btnSubmitLoading = false
+        return
+      }
       this.btnSubmitLoading = true
       postApproval({
         appId: this.applyId,
@@ -277,6 +317,29 @@ export default {
     },
     downloadFile() {
       this.$refs.downloadAnchor.click()
+    },
+    refundSubmit() {
+      // 调用接口 this.realSelfMoney this.realReserveMoney
+      this.btnSubmitLoading = true
+      postRefund({
+        id: this.applyId,
+        realSelfMoney: this.realSelfMoney,
+        realReserveMoney: this.realReserveMoney
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '提交成功！'
+        })
+        this.btnSubmitLoading = false
+        window.location.reload()
+      }).catch(() => {
+        this.btnSubmitLoading = false
+        this.$message({
+          type: 'error',
+          message: '提交失败！'
+        })
+      })
+      this.btnSubmitLoading = false
     },
     // 标题效果
     checkTitle(level) {

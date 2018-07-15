@@ -27,6 +27,17 @@ export function postApproval(data) {
 }
 
 /**
+ * 申请审核核销
+ */
+export function postRefund(data) {
+  return request({
+    url: '/club/app/refund',
+    method: 'POST',
+    data
+  })
+}
+
+/**
  * 删除自己申请
  * @param {Number} id
  */

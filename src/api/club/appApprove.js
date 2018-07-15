@@ -21,6 +21,17 @@ export function postApproval(data) {
 }
 
 /**
+ * 审核核销
+ */
+export function postAppRefund(data) {
+  return request({
+    url: '/club/approval/refund',
+    method: 'POST',
+    data
+  })
+}
+
+/**
  * 获取审核等级
  */
 export function fetchApprovalLv() {
