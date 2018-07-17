@@ -30,7 +30,7 @@
           <el-collapse :accordion="false">
             <el-collapse-item>
               <template slot="title">
-                <i :class="checkTitle(checkResults[checkRefund.level])" class="header-icon"></i>
+                <i :class="checkRefundTitle(checkResults[checkRefund.level])" class="header-icon"></i>
                 {{ checkRefund.title }}
               </template>
               <div v-if="checkResults[checkRefund.level]" class="check-result">
@@ -48,8 +48,8 @@
               <div v-else>
                 <el-alert title="暂无审批记录" type="warning" :closable="false" />
               </div>
-              <div v-if="approvalLV.lv==1">
-                <h2>核账申请：</h2>
+              <div v-if="approvalLV.lv==1 && applyData.isApplyRefund == 0">
+                <h2>申请核账：</h2>
                 <el-form>
                 <el-form-item label="实用自留金额" >
                   <el-input v-model="realSelfMoney" placeholder="请输入金额"></el-input>
@@ -118,13 +118,43 @@
           <el-row>
             <el-col class="cell header category">经费</el-col>
           </el-row>
-          <el-row>
-            <el-col class="cell header" :span="12">自留经费</el-col>
-            <el-col class="cell header" :span="12">社联预留经费</el-col>
+          <el-row v-if="applyData.isApplyRefund == 0">
+            <el-row>
+              <el-col class="cell header" :span="12">自留经费</el-col>
+              <el-col class="cell header" :span="12">社联预留经费</el-col>
+            </el-row>
+            <el-row>
+              <el-col class="cell" :span="12">¥{{ applyData.selfMoney }}</el-col>
+              <el-col class="cell" :span="12">¥{{ applyData.reserveMoney }}</el-col>
+            </el-row>
           </el-row>
-          <el-row>
-            <el-col class="cell" :span="12">¥{{ applyData.selfMoney }}</el-col>
-            <el-col class="cell" :span="12">¥{{ applyData.reserveMoney }}</el-col>
+          <el-row v-if="applyData.isApplyRefund == 1">
+            <el-row>
+              <el-col class="cell header" :span="12">自留经费</el-col>
+              <el-col class="cell header" :span="12">社联预留经费</el-col>
+            </el-row>
+            <el-row>
+              <el-col class="cell" :span="6">申请</el-col>
+              <el-col class="cell" :span="6">实用</el-col>
+              <el-col class="cell" :span="6">申请</el-col>
+              <el-col class="cell" :span="6">实用</el-col>
+            </el-row>
+            <el-row>
+              <el-col class="cell" :span="6">¥{{ applyData.selfMoney }}</el-col>
+              <el-col class="cell" :span="6">¥{{ applyData.realSelfMoney }}</el-col>
+              <el-col class="cell" :span="6">¥{{ applyData.reserveMoney }}</el-col>
+              <el-col class="cell" :span="6">¥{{ applyData.realReserveMoney }}</el-col>
+            </el-row>
+          </el-row>
+          <el-row v-if="applyData.isApplyRefund == 2">
+            <el-row>
+              <el-col class="cell header" :span="12">自留经费</el-col>
+              <el-col class="cell header" :span="12">社联预留经费</el-col>
+            </el-row>
+            <el-row>
+              <el-col class="cell" :span="12">¥{{ applyData.realSelfMoney }}</el-col>
+              <el-col class="cell" :span="12">¥{{ applyData.realReserveMoney }}</el-col>
+            </el-row>
           </el-row>
           <el-row>
             <el-col class="cell header category">其他</el-col>
@@ -219,6 +249,7 @@ export default {
     this.applyId = +this.$route.params.applyId
     fetchApprovalById(this.applyId).then(({ data }) => {
       this.applyData = data
+      console.log(data)
     }).then(() => {
       this.checkResults.lv2 = this.applyData.results.find(_ => _.approvalLV === 2)
       this.checkResults.lv3 = this.applyData.results.find(_ => _.approvalLV === 3)
@@ -350,6 +381,20 @@ export default {
           return ['el-icon-fa-times-circle', 'rejected']
         }
       } else {
+        return ['el-icon-fa-question-circle', 'checking']
+      }
+    },
+    checkRefundTitle(level) {
+      if (level) {
+        if (level.result === '同意') {
+          return ['el-icon-fa-check-circle', 'passed']
+        } else {
+          return ['el-icon-fa-times-circle', 'rejected']
+        }
+      } else {
+        if (this.applyData.isApplyRefund === 0) {
+          return null
+        }
         return ['el-icon-fa-question-circle', 'checking']
       }
     },
