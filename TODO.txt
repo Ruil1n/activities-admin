@@ -1,0 +1,19 @@
+大致如下设计吧，如果有不合理的地方，自行修改好了。
+
+1. 活动申请流程中  [ is_apply_refund = 0 ]
+     原表格不变（金额为申请的金额 reserve_money    self_money）
+
+2. 社长提交'核销'申请后  [ is_apply_refund = 1 ]
+     表格设计：判断 is_apply_refund 的状态
+           a. 社团方面：
+                   申请金额   实用金额  
+                 （reserve_money/real_reserve_money   self_money / real_self_money）
+           b. 财务接收到的表格：
+                   申请金额   实用金额  
+                 （reserve_money/real_reserve_money   self_money / real_self_money）
+
+3. 财务审核'核销'后：
+            a. 同意核销申请  [ is_apply_refund = 2 ]
+                       表格里面展示实用金额（real_reserve_money    real_self_money）
+            b. 不同意   [ is_apply_refund = 0 ]
+                       表格里面展示申请金额（reserve_money    self_money     即为活动申请流程中的原表格不变）
