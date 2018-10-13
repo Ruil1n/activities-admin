@@ -46,7 +46,7 @@
           <el-form-item label="剩余社联预留经费" prop="reserveMoney">
             <el-input-number v-model="form.reserveMoney" :min="0" controls-position="right" label="剩余社联预留经费" />
           </el-form-item>
-          <el-form-item label="是否是优秀社团活动" prop="isFine">
+          <el-form-item label="是否申请优质社团活动" prop="isFine">
             <el-switch v-model="isFine"></el-switch>
           </el-form-item>
           <el-form-item label="活动简介" prop="introduce">

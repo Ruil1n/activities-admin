@@ -36,10 +36,10 @@ export default {
       },
       rules: {
         password: [
-          { required: true, message: '请填写原密码', trigger: 'blur' }
+          { required: true, message: '请填写新密码', trigger: 'blur' }
         ],
         checkPassword: [
-          { required: true, message: '请填写新密码', trigger: 'blur' }
+          { required: true, message: '请确认新密码', trigger: 'blur' }
         ]
       },
       error: false

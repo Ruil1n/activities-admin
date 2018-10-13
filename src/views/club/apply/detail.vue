@@ -160,7 +160,7 @@
             <el-col class="cell header category">其他</el-col>
           </el-row>
           <el-row>
-            <el-col class="cell header" :span="12">是否为优秀社团</el-col>
+            <el-col class="cell header" :span="12">是否申请优质社团活动</el-col>
             <el-col class="cell header" :span="12">是否有附件</el-col>
           </el-row>
           <el-row>
