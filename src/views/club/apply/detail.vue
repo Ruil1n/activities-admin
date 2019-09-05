@@ -111,7 +111,7 @@
             <el-col class="cell header" :span="8">人数</el-col>
           </el-row>
           <el-row>
-            <el-col class="cell" :span="8">{{ applyData.activityStart | parseDate }} ~ {{ applyData.activityEnd | parseDate }}</el-col>
+            <el-col class="cell applyDate" :span="8">{{ applyData.activityStart | parseDate }} ~ {{ applyData.activityEnd | parseDate }}</el-col>
             <el-col class="cell" :span="8">{{ applyData.activityPlace }}</el-col>
             <el-col class="cell" :span="8">{{ applyData.activitypeople }}</el-col>
           </el-row>
@@ -120,8 +120,8 @@
           </el-row>
           <el-row v-if="applyData.isApplyRefund == 0">
             <el-row>
-              <el-col class="cell header" :span="12">自留经费</el-col>
-              <el-col class="cell header" :span="12">社联预留经费</el-col>
+              <el-col class="cell header" :span="12">预计使用自留</el-col>
+              <el-col class="cell header" :span="12">预计使用预留</el-col>
             </el-row>
             <el-row>
               <el-col class="cell" :span="12">¥{{ applyData.selfMoney }}</el-col>
@@ -130,8 +130,8 @@
           </el-row>
           <el-row v-if="applyData.isApplyRefund == 1">
             <el-row>
-              <el-col class="cell header" :span="12">自留经费</el-col>
-              <el-col class="cell header" :span="12">社联预留经费</el-col>
+              <el-col class="cell header" :span="12">预计使用自留</el-col>
+              <el-col class="cell header" :span="12">预计使用预留</el-col>
             </el-row>
             <el-row>
               <el-col class="cell" :span="6">申请</el-col>
@@ -402,7 +402,7 @@ export default {
     checkTagType: ({ result }) => result === '同意' ? 'passed-result' : 'rejected-result'
   },
   filters: {
-    parseDate: (timeStamp) => new Date(+timeStamp).toLocaleDateString()
+    parseDate: (timeStamp) => new Date(+timeStamp).toLocaleDateString() + ' ' + new Date(+timeStamp).toLocaleTimeString()
   }
 }
 </script>
@@ -503,5 +503,9 @@ $borderColor: #333;
   .introduce {
     text-align: left;
   }
+}
+
+.applyDate {
+  font-size: small;
 }
 </style>

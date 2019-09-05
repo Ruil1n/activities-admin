@@ -34,17 +34,17 @@
             <el-input placeholder="活动地点" v-model="form.place" />
           </el-form-item>
           <el-form-item label="活动时间" prop="dateRange">
-            <el-date-picker v-model="dateRange" type="daterange" align="right" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+            <el-date-picker v-model="dateRange" type="datetimerange" align="right" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="参与对象及人数" prop="people">
             <el-input placeholder="人数" v-model="form.people" />
           </el-form-item>
-          <el-form-item label="剩余自留经费" prop="selfMoney">
-            <el-input-number v-model="form.selfMoney" :min="0" controls-position="right" label="剩余自留经费" />
+          <el-form-item label="预计使用自留经费" prop="selfMoney">
+            <el-input-number v-model="form.selfMoney" :min="0" controls-position="right" label="预计使用自留经费" />
           </el-form-item>
-          <el-form-item label="剩余社联预留经费" prop="reserveMoney">
-            <el-input-number v-model="form.reserveMoney" :min="0" controls-position="right" label="剩余社联预留经费" />
+          <el-form-item label="预计使用预留经费" prop="reserveMoney">
+            <el-input-number v-model="form.reserveMoney" :min="0" controls-position="right" label="预计使用预留经费" />
           </el-form-item>
           <el-form-item label="是否申请优质社团活动" prop="isFine">
             <el-switch v-model="isFine"></el-switch>
@@ -198,6 +198,7 @@ export default {
       this.form.isFine = this.isFine ? 0 : 1
       this.form.start = new Date(this.dateRange[0]).getTime() + ''
       this.form.end = new Date(this.dateRange[1]).getTime() + ''
+      // console.log(this.form.file)
       postApproval(this.form).then(res => {
         if (res.status === 200) {
           window.location.reload()
@@ -212,6 +213,7 @@ export default {
     },
     handleFileChange(e) {
       this.form.file = e.target.files[0]
+      console.log(this.form.file)
     },
     selectFile() {
       this.$refs.fileInput.click()

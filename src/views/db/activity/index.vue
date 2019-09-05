@@ -80,22 +80,22 @@ export default {
         })
         return
       }
-      if (!this.validateTableHeader()) {
-        this.$message({
-          message: '文件格式不正确，请选择正确的文件模板',
-          type: 'warning'
-        })
-        return
-      }
+      // if (!this.validateTableHeader()) {
+      //   this.$message({
+      //     message: '文件格式不正确，请选择正确的文件模板',
+      //     type: 'warning'
+      //   })
+      //   return
+      // }
 
-      this.validateTableData()
-      if (this.errStudents.length) {
-        this.$message({
-          message: '学生数据错误，请核对后上传',
-          type: 'warning'
-        })
-        return
-      }
+      // this.validateTableData()
+      // if (this.errStudents.length) {
+      //   this.$message({
+      //     message: '学生数据错误，请核对后上传',
+      //     type: 'warning'
+      //   })
+      //   return
+      // }
 
       this.$confirm('即将上传文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
