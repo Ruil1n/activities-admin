@@ -43,9 +43,9 @@
           <el-form-item label="预计使用自留经费" prop="selfMoney">
             <el-input-number v-model="form.selfMoney" :min="0" controls-position="right" label="预计使用自留经费" />
           </el-form-item>
-          <el-form-item label="预计使用预留经费" prop="reserveMoney">
+          <!-- <el-form-item label="预计使用预留经费" prop="reserveMoney">
             <el-input-number v-model="form.reserveMoney" :min="0" controls-position="right" label="预计使用预留经费" />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="是否申请优质社团活动" prop="isFine">
             <el-switch v-model="isFine"></el-switch>
           </el-form-item>

@@ -120,40 +120,49 @@
           </el-row>
           <el-row v-if="applyData.isApplyRefund == 0">
             <el-row>
-              <el-col class="cell header" :span="12">预计使用自留</el-col>
-              <el-col class="cell header" :span="12">预计使用预留</el-col>
+              <el-col class="cell header">预计使用自留</el-col>
+              <!-- <el-col class="cell header" :span="12">预计使用预留</el-col> -->
             </el-row>
             <el-row>
-              <el-col class="cell" :span="12">¥{{ applyData.selfMoney }}</el-col>
-              <el-col class="cell" :span="12">¥{{ applyData.reserveMoney }}</el-col>
+              <el-col class="cell">¥{{ applyData.selfMoney }}</el-col>
+              <!-- <el-col class="cell" :span="12">¥{{ applyData.reserveMoney }}</el-col> -->
             </el-row>
           </el-row>
           <el-row v-if="applyData.isApplyRefund == 1">
             <el-row>
+              <el-col class="cell header">预计使用自留</el-col>
+              <!-- 取消预留经费
               <el-col class="cell header" :span="12">预计使用自留</el-col>
               <el-col class="cell header" :span="12">预计使用预留</el-col>
+              -->
             </el-row>
             <el-row>
-              <el-col class="cell" :span="6">申请</el-col>
-              <el-col class="cell" :span="6">实用</el-col>
-              <el-col class="cell" :span="6">申请</el-col>
-              <el-col class="cell" :span="6">实用</el-col>
+              <el-col class="cell" :span="12">申请</el-col>
+              <el-col class="cell" :span="12">实用</el-col>
+              <!-- <el-col class="cell" :span="6">申请</el-col>
+              <el-col class="cell" :span="6">实用</el-col> -->
             </el-row>
             <el-row>
-              <el-col class="cell" :span="6">¥{{ applyData.selfMoney }}</el-col>
-              <el-col class="cell" :span="6">¥{{ applyData.realSelfMoney }}</el-col>
-              <el-col class="cell" :span="6">¥{{ applyData.reserveMoney }}</el-col>
-              <el-col class="cell" :span="6">¥{{ applyData.realReserveMoney }}</el-col>
+              <el-col class="cell" :span="12">¥{{ applyData.selfMoney }}</el-col>
+              <el-col class="cell" :span="12">¥{{ applyData.realSelfMoney }}</el-col>
+              <!-- <el-col class="cell" :span="6">¥{{ applyData.reserveMoney }}</el-col>
+              <el-col class="cell" :span="6">¥{{ applyData.realReserveMoney }}</el-col> -->
             </el-row>
           </el-row>
           <el-row v-if="applyData.isApplyRefund == 2">
             <el-row>
-              <el-col class="cell header" :span="12">自留经费</el-col>
-              <el-col class="cell header" :span="12">社联预留经费</el-col>
+              <el-col class="cell header">自留经费</el-col>
+              <!-- 取消预留经费
+                <el-col class="cell header" :span="12">自留经费</el-col>
+                <el-col class="cell header" :span="12">社联预留经费</el-col> 
+              -->
             </el-row>
             <el-row>
+              <el-col class="cell">¥{{ applyData.realSelfMoney }}</el-col>
+              <!-- 取消预留经费
               <el-col class="cell" :span="12">¥{{ applyData.realSelfMoney }}</el-col>
               <el-col class="cell" :span="12">¥{{ applyData.realReserveMoney }}</el-col>
+              -->
             </el-row>
           </el-row>
           <el-row>
