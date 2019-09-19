@@ -13,7 +13,7 @@
         <span>{{scope.row.applyDate | dateFormatter}}</span>
       </template>
     </el-table-column>
-    <el-table-column prop="chiefName" label="社长" />
+    <el-table-column prop="chiefName" label="项目负责人" />
     <el-table-column prop="clubName" label="社团" />
     <el-table-column prop="status" label="状态" />
     <el-table-column v-if="showOperate" align="center" label="操作" width="150">

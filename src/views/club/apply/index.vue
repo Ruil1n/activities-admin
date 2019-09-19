@@ -67,7 +67,7 @@
 </template>
 
 <script>
-// 社长提交申请
+// 项目负责人提交申请
 import ApplyTable from '@/components/ApplyTable'
 import SimplePagination from '@/components/SimplePagination'
 import { postApproval, deleteOwnById } from '@/api/club/app'

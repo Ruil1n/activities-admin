@@ -96,7 +96,7 @@
           </el-row>
           <el-row>
             <el-col class="cell header" :span="12">社团</el-col>
-            <el-col class="cell header" :span="12">社长</el-col>
+            <el-col class="cell header" :span="12">项目负责人</el-col>
           </el-row>
           <el-row>
             <el-col class="cell" :span="12">{{ applyData.clubName }}</el-col>
